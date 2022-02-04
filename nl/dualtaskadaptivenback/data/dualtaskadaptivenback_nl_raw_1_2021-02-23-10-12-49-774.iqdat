@@ -1,0 +1,5 @@
+build	computer.platform	date	time	subject	group	N	blockcode	blocknum	TotalBlocks	trialcode	trialnum	starttrialcounter	stimulusitem1	v_position	v_currenttarget	stimulusitem2	a_stimnumber	a_currenttarget	1response	2response	correct	1latency	2latency	latency	trial_Hitv	trial_Missv	trial_CRv	trial_FAv	trial_Hita	trial_Missa	trial_CRa	trial_FAa	v_Hits	v_FalseA	v_Misses	v_CorrReject	a_Hits	a_FalseA	a_Misses	a_CorrReject	v_TotalHits	v_TotalFA	a_TotalHits	a_TotalFA	DV
+6.3.5	mac	2021-02-23	11:12:49	1	1	2	initial_info	1	0	first_time	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+6.3.5	mac	2021-02-23	11:12:49	1	1	2	initial_info	1	0	age	2	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+6.3.5	mac	2021-02-23	11:12:49	1	1	2	initial_info	1	0	gender	2	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+6.3.5	mac	2021-02-23	11:12:49	1	1	2	initial_info	1	0	id	3	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0

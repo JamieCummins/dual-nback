@@ -1,0 +1,1343 @@
+﻿<usermanual>
+						
+									DUAL N-BACK TASK - adaptive
+SCRIPT INFO
+
+Script Author: Katja Borchert, Ph.D. (katjab@millisecond.com) for Millisecond Software LLC
+Date: October, 2011
+last updated:  07-01-2020 by K. Borchert (katjab@millisecond.com) for Millisecond Software, LLC
+
+Script Copyright ©  07-01-2020 Millisecond Software
+
+
+BACKGROUND INFO
+
+											*Purpose*
+This Inquisit script provides trials and instructions for adaptive DUAL n-back tasks with blue squares in 8 different screen locations 
+as well as spoken Roman letters.
+The script follows the procedure for adaptive DUAL n-back tasks provided by Jaeggi et al (2010), Experiment 2, and implements 
+original instructions (or new ones closely following the original ones) and stimuli kindly provided by the authors. 
+This script provides code to run N=1 to infinite levels of N.
+
+Reference:
+Jaeggi S.M, Studer-Luethi, B., Buschkuehl, M, Su, Y.-F., Jonides, J., Perrig, W.J. (2010). The relationship between n-back performance
+and matrix reasoning - implications for training and transfer. Intelligence, 38, 625-635.
+
+Millisecond Software LLC thanks Jaeggi et al (2010) for kindly providing original instruction materials, stimuli, as well as ample assistance!
+
+
+											  *Task*
+In dual n-back tasks, participants are presented with two sequences of stimuli in two modalities at the same time
+Here:
+a) VISUAL: a random sequence of blue squares that can be presented in 8 different locations on the screen  and 
+b) AUDITORY: a random sequence of 8 spoken Roman letters 
+In each trial one visual and one auditory stimulus are presented and participants are asked to indicate whether the currently presented stimuli
+fulfill the following criteria:
+
+for N=1 trials:
+- is the location of the square the same as the one  in the previous trial? If so (it's a target), and press "A".  If not, don't press "A".
+- is the letter the same as the one in the previous trial? If so (it's a target), and press "L". If not, don't press "L".
+
+for N=2 trials:
+- is the location of the square the same as the one  two trials before? If so (it's a target), and press "A". If not, don't press "A".
+- is the letter the same as the one two trials before? If so (it's a target), and press "L". If not, don't press "L".
+
+etc.
+
+
+DATA FILE INFORMATION: 
+The default data stored in the data files are:
+
+(1) Raw data file: 'DualTaskAdaptiveNBack_raw.iqdat' (a separate file for each participant)
+
+build:							Inquisit build
+computer.platform:				the platform the script was run on
+date, time, subject, group:		date and time script was run with the current subject/groupnumber 
+values.N:						the type of N-back trial
+blockcode:						the name of the current block
+blocknum:						block number
+values.TotalBlocks:				the total number of experimental blocks run
+trialcode:						the name of the current trial
+trialnum:						trialnumber
+starttrialcounter:				counts the number of start trials run
+stimulusitem:					first shown stimulus (=square)
+values.v_position:				contains the position of the current square
+									(1 = (25, 25), 2 = (50, 25), 3 = (75, 25), 4 = (25, 50), 5 = (75, 50), 6 = (25, 75), 7 = (50, 75), 8 = (75, 75))
+values.v_currenttarget:			the position number of the current target shape
+stimulusitem:					second presented stimulus (=sound)
+values.a_stimnumber:			contains item number of the currently presented sound
+values.v_currenttarget:			the item number of the current target sound
+values.1response:				the value of the first response (if any)
+values.2response:				the value of the second response (if any)
+correct:						1 = if correct response, 0 = otherwise
+values.1latency:				the latency value of 1response (in ms)
+values.2latency:				the latency value of 2response (in ms)
+latency:						the latency value of the last response made (if any), MAX=3000 (=no response made)
+values.trial_Hitv:				trial Hit for visual stimulus (1 = hit, 0 = no hit) (visual Hit: any trial response -either the first or the second- for a visual target)
+values.trial_Missv:				trial Miss for visual stimulus (1 = miss, 0 = no miss) (visual Miss: no trial response for a visual target if a visual target was presented)
+values.trial_CRv:				trial Correct Rejection  for visual stimulus (1 = CR, 0 = no CR) (visual CR: no trial response for a visual target if no visual target was presented)
+values.trial_FAv:				trial False Alarm for visual stimulus (1 = FA, 0 = no FA) (visual FA: any trial response for visual target -either the first or the second- if no visual target was presented)
+values.trial_Hita:				trial Hit for auditory stimulus (1 = hit, 0 = no hit) (auditory Hit: any trial response -either the first or the second- for an auditory target)
+values.trial_Missa:				trial Miss for auditory stimulus (1 = miss, 0 = no miss) (auditory Miss: no trial response for an auditory target if an auditory target was presented)
+values.trial_CRa:				trial Correct Rejection  for auditory stimulus (1 = CR, 0 = no CR) (auditory CR: no trial response for an auditory target if no auditory response was presented)
+values.trial_FAa:				trial False Alarm for auditory stimulus (1 = FA, 0 = no FA) (auditory FA: any trial response for an auditory target -either the first or the second- if no auditory response was presented)
+values.v_Hits:					the number of Hits for visual modality
+values.v_FalseA:				the number of False Alarms for visual modality
+values. v_Misses:				the number of Misses for visual modality
+values.v_CorrReject:			the number of Correct Rejections for visual modality
+values.a_Hits:					the number of Hits for auditory modality
+values.a_FalseA:				the number of False Alarms for auditory modality
+values. a_Misses:				the number of Misses for auditory modality
+values.a_CorrReject:			the number of Correct Rejections for auditory modality
+values.v_TotalHits:				the number of total hits across all experimental blocks for the visual modality
+values.a_TotalHits:				the number of total hits across all experimental blocks for the auditory modality
+values.v_TotalFA:				the number of total false alarms across all experimental blocks for the visual modality
+values.a_TotalFA:				the number of total false alarms across all experimental blocks for the auditory modality
+values.DV:						the proportion of ((v_TotalHits - v_TotalFA) + (a_TotalHits - a_TotalFA)/2) /number of total experimental blocks
+
+(2) Summary data file: 'DualTaskAdaptiveNBack_summary*.iqdat' (a separate file for each participant)
+
+script.startdate:				date script was run
+script.starttime:				time script was started
+script.subjectid:				subject id number
+script.groupid:					group id number
+script.elapsedtime:				time it took to run script (in ms)
+computer.platform:				the platform the script was run on
+/completed:						0 = script was not completed (prematurely aborted); 1 = script was completed (all conditions run)
+values.v_TotalHits:				the number of total hits across all experimental blocks for the visual modality
+values.a_TotalHits:				the number of total hits across all experimental blocks for the auditory modality
+values.v_TotalFA:				the number of total false alarms across all experimental blocks for the visual modality
+values.a_TotalFA:				the number of total false alarms across all experimental blocks for the auditory modality
+values.DV:						the proportion of ((v_TotalHits - v_TotalFA) + (a_TotalHits - a_TotalFA)/2) /number of total experimental blocks
+
+
+EXPERIMENTAL SET-UP
+(1) Dual n-back Experiment (adaptive) information:
+- After instructions, participants receive 10 trials for levels N = 1, N = 2, N = 3  for practice (with the possibility for more practice if desired)
+- After practice, participants start out at level N = 1 and depending on performance, move up or stay on level N = 1
+- After a total of 15 blocks, the experiment ends
+
+(2) Dual n-back BLOCK information:
+- Each dual n-task block consists of 20 + trials. 
+=> + trials are the N trials that cannot display target shapes yet (=start trials). Their numbers vary depending on N. The data collected during these 
+		start trials are NOT included in performance counts for Correct Rejections/False Alarms.
+=> Of the actual  20 experimental trials, 4 present a visual target only, 4 present an auditory target only, 2 present both targets
+and 10 present no targets at all
+- The computer selects randomly 
+a) which kind of trial 
+b) what letter/ square location to use if it is not a target
+
+(3) Dual n-back TRIAL informations:
+- Each trial presents the square/letter for 500ms and waits another 2500ms before presenting the next square/letter in the sequence.
+- Participants have the entire 3000ms to respond by pressing "A", "L", or both if they detect a target or two.
+
+
+INFORMATION FOR CODE-CHANGES (e.g. ADDITIONAL/DIFFERENT LEVELS OF N)
+Instructions for changing code for additional Ns are provided with this script. Please check the following sections for the relevant info:
+1. Custom Values
+2. Instructions: (a) Instruction Slides (b) Instruction Blocks
+3. Trials
+4. Blocks: (a) Practice (b) Experimental
+
+
+EDITABLE CODE:
+check below for (relatively) easily editable parameters, stimuli, instructions etc. 
+Keep in mind that you can use this script as a template and therefore always "mess" with the entire code to further customize your experiment.
+
+The parameters you can change are:
+
+/StartN = 1						the starting N
+								!Note: if the starting N changes other changes need to be made, 
+/LastPracticeN = 3				last N tested in Practice (default is 3)
+/NumberTestBlocks = 15			Number of test blocks run (default is 15)
+/Debugmode = 0					Debugmode = 1, target alerts are presented
+								Debugmode = 0, target alerts are turned-off (default)
+/stimulusPresentationtime:		the presentation time (in ms) of the stimuli (default: 500ms)								
+/SOA:							the stimulus onset asynchrony in ms (default: 3000ms)- also response Window							
+
+</usermanual>
+
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EDITABLE PARAMETERS: change editable parameters here
+**************************************************************************************************************
+**************************************************************************************************************
+
+<parameters>
+/StartN = 1
+/LastPracticeN = 1
+/NumberTestBlocks = 20
+/Debugmode = 0
+/stimulusPresentationtime = 500
+/SOA = 3000
+</parameters>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EDITABLE STIMULI: change editable stimuli here
+**************************************************************************************************************
+**************************************************************************************************************
+*original sounds, kindly provided by Jaeggi et al (2010)
+
+<item lettersounds>
+/1 = "1.wav"
+/ 2 = "2.wav"
+/ 3 = "3.wav"
+/ 4 = "4.wav"
+/ 5 = "5.wav"
+/ 6 = "6.wav"
+/ 7 = "7.wav"
+/ 8 = "8.wav"
+</item>
+
+<item bluesquare>
+/1 = "square"
+</item>
+
+<shape square>
+/ shape = rectangle
+/ color = blue
+/ position = (values.xpos, values.ypos)
+/ size = (15%, 15%)
+</shape>
+
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EDITABLE INSTRUCTIONS: change instructions here
+**************************************************************************************************************
+**************************************************************************************************************
+***********INSTRUCTION SLIDES*****************************
+* Items 1-9 are ORIGINAL* instructions for N = 1, N = 2, N = 3 trials, kindly provided by Jaeggi et al. (*Minor change: SPACEBAR instead of "any key" to proceed)
+
+<item Nback_startinstructions>
+/1 = "dualnbackinstructions_start.gif"
+/2 = "dualnbackinstructions_squaren1.gif"
+/3 = "dualnbackinstructions_squaren2.gif"
+/4 = "dualnbackinstructions_squaren3.gif"
+/5 = "dualnbackinstructions_generaldual.gif"
+/6 = "dualnbackinstructions_generaldual1.gif"
+/7 = "dualnbackinstructions_generaldual2.gif"
+/8 = "dualnbackinstructions_practice.gif"
+/9 = "dualnbackinstructions_practice123.gif"
+</item>
+  
+NOTE:
+*the following items/instructions provided are based on original slides
+->  "DualNbackInstructions_practice234.gif"
+
+<item practiceend>
+/1 = "DualNbackInstructions_practiceend1234.gif"
+</item>
+
+*slides to start experimental trials/end experiment (not original)
+<item startendslides>
+/1 = "StartExpt.gif"
+/2 = "ThankYouSlide.gif"
+</item>
+
+*Instructions for individual practice N-levels (not original) - not run for test blocks
+<item expinstructions>
+/1 = "DualNbackInstructionsN1exp.gif"
+/2 = "DualNbackInstructionsN2exp.gif"
+</item>
+
+
+Note: presents the instructions for the test blocks
+<htmlpage ExpInstructions>
+/ file = "ExpInstructions.htm"
+</htmlpage>
+
+Used in htmlpage 'ExpInstructions'
+<expressions>
+/expInstructions = 
+		"<p><u>Letters:</u></p>
+		<p>Druk op 'L' als de huidige letter dezelfde is als degene die werd gepresenteerd <span class='red'><b><%values.N%></b></span> proef(en) ervoor.</p>
+		<p><u>Vierkanten:</u></p>
+		<p>Druk op 'A' als het huidige vierkant op dezelfde locatie verschijnt als de afbeelding <span class='red'><b><%values.N%></b></span> proef(en) ervoor.</p><br><br>";
+</expressions>
+
+******************************
+SUMMARY PAGES
+******************************
+<instruct>
+/ fontstyle = ("Arial", 2.67%, false, false, false, false, 5, 0)
+/ txcolor = black
+/ screencolor = white
+</instruct>
+
+
+<page BlockSummary>
+^^                                           FEEDBACK
+^^Performance on:
+^^(1) Squares:   <%(values.v_Hits + values.v_CorrReject)/20 * 100%> % correct
+^^(2) Letters:    <%(values.a_Hits + values.a_CorrReject)/20 * 100%> % correct
+</page>
+
+
+<page BlockSummary_practice>
+^^                                           FEEDBACK
+^^ Performance on:
+^^(1) Squares:   <%(values.v_Hits + values.v_CorrReject)/10 * 100%> % correct
+^^(2) Letters:    <%(values.a_Hits + values.a_CorrReject)/10 * 100%> % correct
+</page>
+
+**************************************************************************************************************
+								!!!REMAINING CODE: Customize after careful consideration only!!!
+**************************************************************************************************************
+
+
+**************************************************************************************************************
+**************************************************************************************************************
+	DEFAULTS
+**************************************************************************************************************
+**************************************************************************************************************
+script requires Inquisit 5.0.5.0 or higher
+
+<defaults>
+/canvasaspectratio = (4,3)
+/minimumversion = "5.0.5.0"
+/ fontstyle = ("Arial", 3%, false, false, false, false, 5, 1)
+/txbgcolor = white
+/ txcolor = black
+/ screencolor = white
+</defaults>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	DATA
+**************************************************************************************************************
+**************************************************************************************************************
+
+Note: data file explanations under User Manual Information at the top
+
+************************
+raw data
+************************
+
+<data>
+/columns = (build, computer.platform, date, time, subject, group, values.N, blockcode, blocknum, values.TotalBlocks, trialcode, trialnum,
+				values.starttrialcounter,
+				stimulusitem, values.v_position, values.v_currenttarget, 
+				stimulusitem, values.a_stimnumber, values.a_currenttarget, 
+				values.1response, values.2response,  correct, 
+				values.1latency, values.2latency, values.latency,
+				values.trial_Hitv, values.trial_Missv, values.trial_CRv, values.trial_FAv,
+				values.trial_Hita, values.trial_Missa, values.trial_CRa, values.trial_FAa,
+				values.v_Hits, values.v_FalseA, values.v_Misses, values.v_CorrReject,
+				values.a_Hits, values.a_FalseA, values.a_Misses, values.a_CorrReject,
+				values.v_TotalHits, values.v_TotalFA, values.a_TotalHits, values.a_TotalFA, values.DV)
+/ separatefiles = true
+</data>
+
+************************
+summary data
+************************
+
+<summarydata>
+/columns = (script.startdate, script.starttime, script.subjectid,script.groupid, script.elapsedtime, computer.platform, values.completed,
+values.v_TotalHits, values.v_TotalFA, values.a_TotalHits, values.a_TotalFA, values.DV)
+/ separatefiles = true
+</summarydata>
+
+
+**************************************************************************************************************
+**************************************************************************************************************
+	VALUES: automatically updated
+**************************************************************************************************************
+**************************************************************************************************************
+                                    
+/completed:				0 = script was not completed (script was prematurely aborted); 1 = script was completed (all conditions run)
+
+v_position:				contains the position of the current square
+							(1 = (25, 25), 2 = (50, 25), 3 = (75, 25), 4 = (25, 50), 5 = (75, 50), 6 = (25, 75), 7 = (50, 75), 8 = (75, 75))
+N:							the trial lag between a target and the stimulus it repeats
+v_currenttarget:		contains the position of the current target square
+							(a target in N = 0 trials is a stimulus with the same stimulus number as stored in target0)
+a_currenttarget:		contains the item number of the current target sound
+							(a target in N = 0 trials is a stimulus with the same stimulus number as stored in target0)
+v_Hits:					codes the number of correctly identifiying a square target
+v_FalseA:				codes the number of times a participant identifies a square non-target as a square target
+v_Misses:				codes the number of times a participant misses to identify a square target
+v_CorrReject:			codes the number of times a participant correctly identifies a square non-target (and does nothing)
+1response: 				codes the first response (if any)
+2response:				codes the second response (if any)
+1latency :				codes the latency (if any) of the first response
+2latency 	:			codes the latency (if any) of the second response
+latency:				contains trial latency data, stores the latency of the last given response (if any)
+v_TotalHits:			the number of total hits across all experimental blocks for the visual modality
+a_TotalHits:			the number of total hits across all experimental blocks for the auditory modality	
+v_TotalFA:				the number of total false alarms across all experimental blocks for the visual modality
+a_TotalFA:				the number of total false alarms across all experimental blocks for the auditory modality
+TotalBlocks:			the total number of experimental blocks run
+DV:						the dependent variable in Jaeggi et al (2010): the proportion of (((v_TotalHits - v_TotalFA) + (a_TotalHits - a_TotalFA))/2) /number of total blocks
+starttrialcounter:		counts the number of start trials run
+repetitioncounter:		keeps track of the number of experimental blocks run on a level of N
+
+/lastIndex:				helper variable to manage the last N presented visual and audio items
+
+<values >
+/completed = 0
+/stim = ""
+/stimnumber = 0
+/N = 2
+/v_position = 0
+/v_currenttarget = 0
+/a_currenttarget = 0
+/v_Hits = 0
+/v_FalseA = 0
+/v_Misses = 0
+/v_CorrReject = 0
+/a_Hits = 0
+/a_FalseA = 0
+/a_Misses = 0
+/a_CorrReject = 0
+/xpos = 0
+/ypos = 0
+/a_stimnumber = 0
+/1response = 0
+/2response = 0
+/1latency = 0
+/2latency = 0
+/latency = 0
+/v_TotalFA = 0
+/v_TotalHits = 0
+/a_TotalFA = 0
+/a_TotalHits = 0
+/TotalBlocks = 0
+/DV = 0
+/starttrialcounter = 0
+/repetitioncounter = 0
+/trial_Hitv = 0
+/trial_Missv = 0
+/trial_CRv = 0
+/trial_FAv = 0
+/trial_Hita = 0
+/trial_Missa = 0
+/trial_CRa = 0
+/trial_FAa = 0
+
+/lastIndex = 0
+/lastVitem = ""
+/lastAitem = ""
+</values>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EXPRESSIONS
+**************************************************************************************************************
+**************************************************************************************************************
+
+expressions.selectinstruct helps to select the adequate instructions for adaptive n-back testing
+
+<expressions>
+/selectinstruct = values.N + 1
+</expressions>
+
+
+
+/fillVlist:				recursive function that fills list.v_minus with N items at the beginning of each new block
+/fillAlist:				recursive function that fills list.a_minus with N items at the beginning of each new block
+
+<expressions>
+/fillVlist = {
+	if (values.lastIndex < values.N){
+		list.v_minus.insertitem(0, 1);
+		values.lastIndex += 1;
+		expressions.fillVlist;
+	} else {
+		list.v_minus.insertitem(0, 1);
+	};
+}
+/fillAlist = {
+	if (values.lastIndex < values.N){
+		list.a_minus.insertitem(0, 1);
+		values.lastIndex += 1;
+		expressions.fillAlist;
+	} else {
+		list.a_minus.insertitem(0, 1);
+	};
+}
+</expressions>
+
+
+
+
+**************************************************************************************************************
+**************************************************************************************************************
+	INSTRUCTIONS
+**************************************************************************************************************
+**************************************************************************************************************
+*********************INSTRUCTION IMAGE SELECTION********************************************************
+<picture DualNbackinstructions_start>
+/ items = Nback_startinstructions
+/ select = sequence
+/ size = (100%, 100%)
+</picture>
+
+<picture Practice_end>
+/ items = practiceend
+/select = 1
+/ size = (100%, 100%)
+</picture>
+
+<picture StartExp_slide>
+/ items = startendslides
+/ select = 1
+/ size = (100%, 100%)
+</picture>
+
+<picture EndExp_slide>
+/ items = startendslides
+/select = 2
+/ size = (100%, 100%)
+</picture>
+
+*instructions for individual experimental trials are selected depending on level of N
+<picture expinstructionslide>
+/items = expinstructions
+/select = expressions.selectinstruct
+/size = (100%, 100%)
+</picture>
+
+<picture repeatpractice_page>
+/items =  ("DualNbackInstructions_practicerepeat.gif")
+/size = (100%, 100%)
+</picture> 
+
+********************INSTRUCTION TRIALS****************************************************************
+
+<trial Nbackinstruct_starttrial>
+/ stimulusframes = [1 = DualNbackinstructions_start]
+/ validresponse = (57)
+/ recorddata = false
+</trial>
+
+<trial Practice_endtrial>
+/ stimulusframes = [1 = Practice_end]
+/ validresponse = (57)
+/ recorddata = false
+</trial>
+
+<trial StartExp_trial>
+/ stimulusframes = [1 = StartExp_slide]
+/ validresponse = (57)
+/ recorddata = false
+</trial>
+
+
+*only for practice trials:
+<trial practice_expinstructiontrial>
+/ stimulusframes = [1 = expinstructionslide]
+/ validresponse = (57)
+/ recorddata = false
+/ errormessage = false
+/ correctmessage = false
+</trial>
+
+<trial repeatpractice>
+/ stimulusframes = [1 = repeatpractice_page]
+/ validresponse = (49, 21)
+/ recorddata = false
+</trial>
+
+
+*****stores final counts of TotalHits and TotalFAs (for both modalities), and final DV into datafile
+<trial EndExp_trial>
+/ stimulusframes = [1 = EndExp_slide]
+/ validresponse = (57)
+</trial>
+
+*****************INSTRUCTION BLOCKS*******************************************************************
+ATTENTION: PRACTICE BLOCKS
+(1) This block sets the beginning N value for practice trials (here: values.N = parameters.StartN)
+(2) runs original instructions 1-9, if more/fewer than three N examples are given adjust:  /trials = [1-X.....] 
+
+<block  Nbackinstruct_start>
+/ trials = [1-9 = Nbackinstruct_starttrial]
+/ recorddata = false
+/ onblockbegin = [values.N = parameters.StartN]
+/ skip = [surveypage.repeat_instructions.response == "Nee"]
+</block>
+
+<block RepeatPractice>
+/trials = [1 = repeatpractice]
+/ recorddata = false
+/ branch = [		
+					if (trial.repeatpractice.response == 21) {values.N = parameters.StartN; block.practice_d_ntask}  else block.Practiceblock_end;	
+]
+/ screencolor = white
+</block>
+
+<block Practiceblock_end>
+/ trials = [1 = Practice_endtrial]
+/ recorddata = false
+</block>
+
+EXPERIMENTAL BLOCKS
+(1) This block sets the starting value of N (here:  values.N = parameters.StartN)
+
+<block StartExp>
+/ trials = [1 = StartExp_trial]
+/ recorddata = false
+/ onblockbegin = [
+	values.N = parameters.StartN;
+	values.v_TotalFA = 0;
+	values.v_TotalHits = 0;
+	values.a_TotalFA = 0;
+	values.a_TotalHits = 0;
+	values.TotalBlocks = 0; 
+	values.DV = 0;
+]
+</block>
+
+<block EndExp>
+/ trials = [1 = EndExp_trial]
+</block>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	STIMULI
+**************************************************************************************************************
+**************************************************************************************************************
+
+<sound startletter>
+/ items = lettersounds
+/ select = a_startcounter
+</sound>
+
+<sound nontargetletter>
+/ items = lettersounds
+/ select = a_nontargetcounter
+</sound>
+
+<sound targetletter>
+/ items = lettersounds
+/ select = a_targetcounter
+</sound>
+
+****************************
+ASSISTANT STIMULI
+****************************
+
+*****acts as an eraser after showing the key stimuli for 500ms, staying on for the remainder of the 3000ms dedicated to each trial
+<shape eraser>
+/ shape = rectangle
+/ size = (30%, 30%)
+/ color = white
+/ position = (values.xpos, values.ypos)
+</shape>
+
+*****fixation cross
+<text fixationcross>
+/ items = ("+")
+/position = (50%, 50%)
+/ erase = false
+/ color = black
+</text>
+
+
+******Debug Elements
+<text letter_targetalert>
+/ onprepare = [text.letter_targetalert.skip = !parameters.debugmode;]
+/items = ("letter")
+/position = (50%, 55%)
+/ fontstyle = ("Arial", 3%, false, false, false, false, 5, 1)
+/ txcolor = yellow
+/txbgcolor = white
+</text>
+
+
+<text square_targetalert>
+/ onprepare = [text.square_targetalert.skip = !parameters.debugmode;]
+/items = ("square")
+/position = (50%, 55%)
+/ fontstyle = ("Arial", 3%, false, false, false, false, 5, 1)
+/ txcolor = orange
+/txbgcolor = white
+</text>
+
+
+<text both_targetalert>
+/ onprepare = [text.both_targetalert.skip = !parameters.debugmode;]
+/items = ("both")
+/position = (50%, 55%)
+/ fontstyle = ("Arial", 3%, false, false, false, false, 5, 1)
+/ txcolor = red
+/txbgcolor = white
+</text>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	LISTS	
+**************************************************************************************************************
+**************************************************************************************************************
+
+Note: list contains the positions of the presented face positions in reversed order (dynamic list)
+(newest item is on list position 1)
+<list v_minus>
+</list>
+
+Note: list contains the itemnumbers of the presented audio words in reversed order (dynamic list)
+<list a_minus>
+</list>
+
+
+*********SOUNDS: AUDITORY***********************************
+<list a_targetcounter>
+/items = (1, 2, 3, 4, 5, 6, 7, 8)
+/selectionmode = values.a_currenttarget
+/ selectionrate = trial
+</list>
+
+<list a_nontargetcounter>
+/items = (1, 2, 3, 4, 5, 6, 7, 8)
+/replace = true
+/not = (values.a_currenttarget)
+/ selectionrate = trial
+</list>
+
+<list a_startcounter>
+/items = (1, 2, 3, 4, 5, 6, 7, 8)
+/replace = true
+/ selectionrate = trial
+</list>
+
+*********SQUARE: VISUAL***********************************
+<list v_targetcounter>
+/items = (1, 2, 3, 4, 5, 6, 7, 8)
+/selectionmode = values.v_currenttarget
+/ selectionrate = trial
+</list>
+
+<list v_nontargetcounter>
+/items = (1, 2, 3, 4, 5, 6, 7, 8)
+/replace= true
+/not = (values.v_currenttarget)
+/ selectionrate = trial
+</list>
+
+<list v_startcounter>
+/items = (1, 2, 3, 4, 5, 6, 7, 8)
+/replace = true
+/ selectionrate = trial
+</list>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	TRIALS 	
+**************************************************************************************************************
+**************************************************************************************************************
+
+*there are 3 types of main trials
+	1. start: 				presented at beginning of block when number of trials too small for Target trials; they can present
+							any of the stimuli (N = 0,  start trial presents the target shape/target sound)
+	2. nontarget:		trials that present stimuli that do not repeat the stimuli of n-trials before (= no target stimuli)
+	3. target:			3 different trials that present a mixture of Target and Nontarget stimuli
+							a) trials that present visual but not auditory target
+							b) trials that present auditory but not visual target
+							c) trials that present visual and auditory targets
+
+<trial start>
+/ stimulustimes = [0 = fixationcross, square, startletter,  a_for_shape, l_for_letter]
+/ validresponse = (noresponse, 30, 38)
+/ isvalidresponse = [ if ( (trial.start.response == 30 || trial.start.response == 38)  && values.1response == 0 ) 
+						{
+								values.1response = trial.start.response;
+								values.1latency = trial.start.latency;
+						};
+				           if ( values.1response != 0  && (trial.start.response == 30 || trial.start.response == 38) && trial.start.response != values.1response ) 
+						{
+								values.2response = trial.start.response;
+								values.2latency = trial.start.latency;
+						};
+			             values.1response != 0 && values.2response != 0;]
+/ iscorrectresponse = [values.1response == 0 && values.2response == 0]
+/ ontrialbegin = [
+	trial.start.insertstimulustime(shape.eraser, parameters.stimulusPresentationtime);
+	values.v_currenttarget = list.v_minus.item(values.N);
+	values.a_currenttarget = list.a_minus.item(values.N);
+					
+	values.1response = 0; values.1latency = 0; values.2response = 0; values.2latency = 0;
+										
+	list.v_startcounter.nextvalue;
+	list.a_startcounter.nextvalue;
+	
+	{if (list.v_startcounter.currentvalue == 1 || list.v_startcounter.currentvalue == 4 || list.v_startcounter.currentvalue == 6) values.xpos = 25};
+	{if (list.v_startcounter.currentvalue == 2 || list.v_startcounter.currentvalue == 7) values.xpos = 50};
+	{if (list.v_startcounter.currentvalue == 3 || list.v_startcounter.currentvalue == 5 || list.v_startcounter.currentvalue == 8) values.xpos = 75};
+	{if (list.v_startcounter.currentvalue == 1 || list.v_startcounter.currentvalue == 2 || list.v_startcounter.currentvalue == 3) values.ypos = 25};
+	{if (list.v_startcounter.currentvalue == 4 || list.v_startcounter.currentvalue == 5) values.ypos = 50};
+	{if (list.v_startcounter.currentvalue == 6 || list.v_startcounter.currentvalue == 7 || list.v_startcounter.currentvalue == 8) values.ypos = 75};
+	values.starttrialcounter += 1;
+
+	values.trial_Hitv = 0; values.trial_Missv = 0; values.trial_CRv = 0; values.trial_FAv = 0;
+	values.trial_Hita = 0; values.trial_Missa = 0; values.trial_CRa = 0; values.trial_FAa = 0;
+]
+
+/ ontrialend = [
+	trial.start.resetstimulusframes();
+	values.lastVitem = list.v_startcounter.currentvalue;
+	values.lastAitem = sound.startletter.currentitemnumber;
+
+	list.v_minus.insertitem(values.lastVitem, 1);
+	list.a_minus.insertitem(values.lastAitem, 1);
+					
+	values.v_position = list.v_startcounter.currentvalue; 
+	values.a_stimnumber = list.a_startcounter.currentvalue;
+	{if (values.1response != 0 && values.2response == 0) values.latency = values.1latency else values.latency = trial.start.latency};
+]
+/ beginresponsetime = 0
+/ trialduration = parameters.SOA
+/branch = [if (values.starttrialcounter < values.N) trial.start]
+</trial>
+
+
+<trial nontarget>
+/ stimulustimes = [0 = fixationcross, square, nontargetletter,  a_for_shape, l_for_letter]
+/ validresponse = (noresponse, 30, 38)
+/ isvalidresponse = [ if ( (trial.nontarget.response == 30 || trial.nontarget.response == 38)  && values.1response == 0 ) 
+						{
+								values.1response = trial.nontarget.response;
+								values.1latency = trial.nontarget.latency;
+						};
+				           if ( values.1response != 0  && (trial.nontarget.response == 30 || trial.nontarget.response == 38) && trial.nontarget.response != values.1response ) 
+						{
+								values.2response = trial.nontarget.response;
+								values.2latency = trial.nontarget.latency;
+						};
+			             values.1response != 0 && values.2response != 0]
+/ iscorrectresponse = [values.1response == 0 && values.2response == 0]
+/ ontrialbegin = [
+	trial.nontarget.insertstimulustime(shape.eraser, parameters.stimulusPresentationtime);
+	values.v_currenttarget = list.v_minus.item(values.N);
+	values.a_currenttarget = list.a_minus.item(values.N);
+			
+	values.1response = 0; values.1latency = 0; values.2response = 0; values.2latency = 0;
+					
+	list.v_nontargetcounter.nextvalue; 
+	list.a_nontargetcounter.nextvalue;
+					 		 
+	{if (list.v_nontargetcounter.currentvalue == 1 || list.v_nontargetcounter.currentvalue == 4 || list.v_nontargetcounter.currentvalue == 6) values.xpos = 25};
+	{if (list.v_nontargetcounter.currentvalue == 2 || list.v_nontargetcounter.currentvalue == 7) values.xpos = 50};
+	{if (list.v_nontargetcounter.currentvalue == 3 || list.v_nontargetcounter.currentvalue == 5 || list.v_nontargetcounter.currentvalue == 8) values.xpos = 75};
+	{if (list.v_nontargetcounter.currentvalue == 1 || list.v_nontargetcounter.currentvalue == 2 || list.v_nontargetcounter.currentvalue == 3) values.ypos = 25};
+	{if (list.v_nontargetcounter.currentvalue == 4 || list.v_nontargetcounter.currentvalue == 5) values.ypos = 50};
+	{if (list.v_nontargetcounter.currentvalue == 6 || list.v_nontargetcounter.currentvalue == 7 || list.v_nontargetcounter.currentvalue == 8) values.ypos = 75};
+					
+	values.trial_Hitv = 0; values.trial_Missv = 0; values.trial_CRv = 0; values.trial_FAv = 0;
+	values.trial_Hita = 0; values.trial_Missa = 0; values.trial_CRa = 0; values.trial_FAa = 0;
+]
+
+/ ontrialend = [
+	trial.nontarget.resetstimulusframes();
+	
+	values.lastVitem = list.v_nontargetcounter.currentvalue;
+	values.lastAitem = sound.nontargetletter.currentitemnumber;
+					
+	list.v_minus.insertitem(values.lastVitem, 1);
+	list.a_minus.insertitem(values.lastAitem, 1);					
+					
+	values.v_position = list.v_nontargetcounter.currentvalue; 
+	values.a_stimnumber = list.a_nontargetcounter.currentvalue;					
+
+	if (values.1response == 30 || values.2response == 30){
+		values.trial_FAv = 1;
+		values.v_FalseA += 1;
+	} else {
+		values.trial_CRv = 1;
+		values.v_CorrReject += 1;
+	};
+	if (values.1response == 38 || values.2response == 38){
+		values.trial_FAa = 1;
+		values.a_FalseA += 1;
+	} else {
+		values.trial_CRa = 1;
+		values.a_CorrReject += 1;
+	};	
+	if (values.1response != 0 && values.2response == 0) {
+		values.latency = values.1latency;		
+	} else {
+		values.latency = trial.nontarget.latency;		
+	};
+]
+/ beginresponsetime = 0
+/ trialduration = parameters.SOA
+</trial>
+
+
+*****auditory target, but NOT visual target
+<trial a_target>
+/ stimulustimes = [0 = fixationcross, square, targetletter, letter_targetalert,  a_for_shape, l_for_letter]
+/ validresponse = (noresponse, 30, 38)
+/ isvalidresponse = [ if ( (trial.a_target.response == 30 || trial.a_target.response == 38)  && values.1response == 0 ) 
+						{
+								values.1response = trial.a_target.response;
+								values.1latency = trial.a_target.latency;
+						};
+				           if ( values.1response != 0  && (trial.a_target.response == 30 || trial.a_target.response == 38) && trial.a_target.response != values.1response ) 
+						{
+								values.2response = trial.a_target.response;
+								values.2latency = trial.a_target.latency;
+						};
+			             values.1response != 0 && values.2response != 0;]
+/ iscorrectresponse = [values.1response == 38 && values.2response == 0]
+/ ontrialbegin = [
+	trial.a_target.insertstimulustime(shape.eraser, parameters.stimulusPresentationtime);
+	values.v_currenttarget = list.v_minus.item(values.N);
+	values.a_currenttarget = list.a_minus.item(values.N);	
+	values.1response = 0; values.1latency = 0; values.2response = 0; values.2latency = 0;
+	list.v_nontargetcounter.nextvalue; 
+	list.a_targetcounter.nextvalue;
+	{if (list.v_nontargetcounter.currentvalue == 1 || list.v_nontargetcounter.currentvalue == 4 || list.v_nontargetcounter.currentvalue == 6) values.xpos = 25};
+	{if (list.v_nontargetcounter.currentvalue == 2 || list.v_nontargetcounter.currentvalue == 7) values.xpos = 50};
+	{if (list.v_nontargetcounter.currentvalue == 3 || list.v_nontargetcounter.currentvalue == 5 || list.v_nontargetcounter.currentvalue == 8) values.xpos = 75};
+	{if (list.v_nontargetcounter.currentvalue == 1 || list.v_nontargetcounter.currentvalue == 2 || list.v_nontargetcounter.currentvalue == 3) values.ypos = 25};
+	{if (list.v_nontargetcounter.currentvalue == 4 || list.v_nontargetcounter.currentvalue == 5) values.ypos = 50};
+	{if (list.v_nontargetcounter.currentvalue == 6 || list.v_nontargetcounter.currentvalue == 7 || list.v_nontargetcounter.currentvalue == 8) values.ypos = 75};
+
+	values.trial_Hitv = 0; values.trial_Missv = 0; values.trial_CRv = 0; values.trial_FAv = 0;
+	values.trial_Hita = 0; values.trial_Missa = 0; values.trial_CRa = 0; values.trial_FAa = 0;
+]
+/ ontrialend = [	
+	trial.a_target.resetstimulusframes();
+	values.lastVitem = list.v_nontargetcounter.currentvalue;
+	values.lastAitem = sound.targetletter.currentitemnumber;
+					
+	list.v_minus.insertitem(values.lastVitem, 1);
+	list.a_minus.insertitem(values.lastAitem, 1);		
+
+	values.v_position = list.v_nontargetcounter.currentvalue; values.a_stimnumber = list.a_targetcounter.currentvalue;
+
+	if (values.1response == 38 || values.2response == 38) {
+			values.a_Hits += 1; values.trial_Hita = 1}
+	else {
+			values.a_Misses += 1; values.trial_Missa = 1;
+	};
+	if (values.1response == 30 || values.2response == 30){
+		values.trial_FAv = 1;
+		values.v_FalseA += 1;
+	} else {
+		values.trial_CRv = 1;
+		values.v_CorrReject += 1;
+	};
+
+	if (values.1response != 0 && values.2response == 0) {
+		values.latency = values.1latency;		
+	} else {
+		values.latency = trial.a_target.latency;		
+	};
+]
+/ beginresponsetime = 0
+/ trialduration = parameters.SOA
+</trial>
+
+*****visual target, but NOT auditory target
+<trial v_target>
+/ stimulustimes = [0 = fixationcross, square, nontargetletter, square_targetalert,  a_for_shape, l_for_letter]
+/ validresponse = (noresponse, 30, 38)
+/ isvalidresponse = [ if ( (trial.v_target.response == 30 || trial.v_target.response == 38)  && values.1response == 0 ) 
+						{
+								values.1response = trial.v_target.response;
+								values.1latency = trial.v_target.latency;
+						};
+				           if ( values.1response != 0  && (trial.v_target.response == 30 || trial.v_target.response == 38) && trial.v_target.response != values.1response ) 
+						{
+								values.2response = trial.v_target.response;
+								values.2latency = trial.v_target.latency;
+						};
+			             values.1response != 0 && values.2response != 0;]
+/ iscorrectresponse = [values.1response == 30 && values.2response == 0]
+/ ontrialbegin = [
+	trial.v_target.insertstimulustime(shape.eraser, parameters.stimulusPresentationtime);
+	values.v_currenttarget = list.v_minus.item(values.N);
+	values.a_currenttarget = list.a_minus.item(values.N);				
+	values.1response = 0; values.1latency = 0; values.2response = 0; values.2latency = 0;
+	list.v_targetcounter.nextvalue; 
+	list.a_nontargetcounter.nextvalue;
+	{if (list.v_targetcounter.currentvalue == 1 || list.v_targetcounter.currentvalue == 4 || list.v_targetcounter.currentvalue == 6) values.xpos = 25};
+	{if (list.v_targetcounter.currentvalue == 2 || list.v_targetcounter.currentvalue == 7) values.xpos = 50};
+	{if (list.v_targetcounter.currentvalue == 3 || list.v_targetcounter.currentvalue == 5 || list.v_targetcounter.currentvalue == 8) values.xpos = 75};
+	{if (list.v_targetcounter.currentvalue == 1 || list.v_targetcounter.currentvalue == 2 || list.v_targetcounter.currentvalue == 3) values.ypos = 25};
+	{if (list.v_targetcounter.currentvalue == 4 || list.v_targetcounter.currentvalue == 5) values.ypos = 50};
+	{if (list.v_targetcounter.currentvalue == 6 || list.v_targetcounter.currentvalue == 7 || list.v_targetcounter.currentvalue == 8) values.ypos = 75};
+
+	values.trial_Hitv = 0; values.trial_Missv = 0; values.trial_CRv = 0; values.trial_FAv = 0;
+	values.trial_Hita = 0; values.trial_Missa = 0; values.trial_CRa = 0; values.trial_FAa = 0;
+]
+/ ontrialend = [
+	trial.v_target.resetstimulusframes();
+	
+	values.lastVitem = list.v_targetcounter.currentvalue;
+	values.lastAitem = sound.nontargetletter.currentitemnumber;
+					
+	list.v_minus.insertitem(values.lastVitem, 1);
+	list.a_minus.insertitem(values.lastAitem, 1);			
+	
+	values.v_position = list.v_targetcounter.currentvalue; values.a_stimnumber = list.a_nontargetcounter.currentvalue;
+
+	if (values.1response == 30 || values.2response == 30) {
+			values.v_Hits += 1; 
+			values.trial_Hitv = 1}
+	else {
+			values.v_Misses += 1; 
+			values.trial_Missv = 1;
+	};
+	if (values.1response == 38 || values.2response == 38){
+		values.trial_FAa = 1;
+		values.a_FalseA += 1;
+	} else {
+		values.trial_CRa = 1;
+		values.a_CorrReject += 1;
+	};
+	if (values.1response != 0 && values.2response == 0) {
+		values.latency = values.1latency;		
+	} else {
+		values.latency = trial.v_target.latency;	
+	};
+]
+/ beginresponsetime = 0
+/ trialduration = parameters.SOA
+</trial>
+
+
+*****visual target AND auditory target
+<trial av_target>
+/ stimulustimes = [0 = fixationcross, square, targetletter, both_targetalert,  a_for_shape, l_for_letter]
+/ validresponse = (noresponse, 30, 38)
+/ isvalidresponse = [ if ( (trial.av_target.response == 30 || trial.av_target.response == 38)  && values.1response == 0 ) 
+						{
+								values.1response = trial.av_target.response;
+								values.1latency = trial.av_target.latency;
+						};
+				           if ( values.1response != 0  && (trial.av_target.response == 30 || trial.av_target.response == 38) && trial.av_target.response != values.1response ) 
+						{
+								values.2response = trial.av_target.response;
+								values.2latency = trial.av_target.latency;
+						};
+			             values.1response != 0 && values.2response != 0;
+]
+/ iscorrectresponse = [values.1response !=0 && values.2response != 0]
+/ ontrialbegin = [
+	trial.av_target.insertstimulustime(shape.eraser, parameters.stimulusPresentationtime);
+	values.v_currenttarget = list.v_minus.item(values.N);
+	values.a_currenttarget = list.a_minus.item(values.N);		
+	values.1response = 0; values.1latency = 0; values.2response = 0; values.2latency = 0;
+	list.v_targetcounter.nextvalue; 
+	list.a_targetcounter.nextvalue;
+	{if (list.v_targetcounter.currentvalue == 1 || list.v_targetcounter.currentvalue == 4 || list.v_targetcounter.currentvalue == 6) values.xpos = 25};
+	{if (list.v_targetcounter.currentvalue == 2 || list.v_targetcounter.currentvalue == 7) values.xpos = 50};
+	{if (list.v_targetcounter.currentvalue == 3 || list.v_targetcounter.currentvalue == 5 || list.v_targetcounter.currentvalue == 8) values.xpos = 75};
+	{if (list.v_targetcounter.currentvalue == 1 || list.v_targetcounter.currentvalue == 2 || list.v_targetcounter.currentvalue == 3) values.ypos = 25};
+	{if (list.v_targetcounter.currentvalue == 4 || list.v_targetcounter.currentvalue == 5) values.ypos = 50};
+	{if (list.v_targetcounter.currentvalue == 6 || list.v_targetcounter.currentvalue == 7 || list.v_targetcounter.currentvalue == 8) values.ypos = 75};
+
+	values.trial_Hitv = 0; values.trial_Missv = 0; values.trial_CRv = 0; values.trial_FAv = 0;
+	values.trial_Hita = 0; values.trial_Missa = 0; values.trial_CRa = 0; values.trial_FAa = 0;
+]
+/ ontrialend = [
+	trial.av_target.resetstimulusframes();
+	values.lastVitem = list.v_targetcounter.currentvalue;
+	values.lastAitem = sound.targetletter.currentitemnumber;
+					
+	list.v_minus.insertitem(values.lastVitem, 1);
+	list.a_minus.insertitem(values.lastAitem, 1);					
+					
+	values.v_position = list.v_targetcounter.currentvalue; values.a_stimnumber = list.a_targetcounter.currentvalue;					
+					
+	if (values.1response == 30 || values.2response == 30) {
+			values.v_Hits += 1; 
+			values.trial_Hitv = 1}
+	else {
+			values.v_Misses += 1; 
+			values.trial_Missv = 1;
+	};
+	if (values.1response == 38 || values.2response == 38) {
+			values.a_Hits += 1; 
+			values.trial_Hita = 1}
+	else {
+			values.a_Misses += 1; 
+			values.trial_Missa = 1;
+	};	
+		
+	if (values.1response != 0 && values.2response == 0) {
+		values.latency = values.1latency;		
+	} else {
+		values.latency = trial.av_target.latency;		
+	};
+]
+/ beginresponsetime = 0
+/ trialduration = parameters.SOA
+</trial>
+						
+**************************************************************************************************************
+**************************************************************************************************************
+	BLOCKS
+**************************************************************************************************************
+**************************************************************************************************************
+
+******************************
+Practice Blocks: nonadaptive
+******************************
+
+* Practice Blocks do NOT record data
+* Block starts with N  start-trials that  cannot present targets yet 
+* in remaining 10 trials: ratio nontargets : v_target : a_target : av_target: 5: 2: 2: 1
+*Practice starts at level N = 1 and ends with N = 3
+
+<block practice_d_ntask>
+/ onblockbegin = [
+
+						values.TotalBlocks += 1; 
+						values.starttrialcounter = 0;
+						values.v_currenttarget = 0; 
+						values.a_currenttarget = 0; 
+						
+						list.v_minus.reset();
+						values.lastIndex = 1;
+						expressions.fillVlist;
+						
+						list.a_minus.reset();
+						values.lastIndex = 1;
+						expressions.fillAlist;					
+						
+						values.v_Hits = 0; values.v_FalseA = 0; values.v_Misses = 0; values.v_CorrReject = 0;
+						values.a_Hits = 0; values.a_FalseA = 0; values.a_Misses = 0; values.a_CorrReject = 0;
+
+						values.repetitioncounter += 1;
+]										
+/ trials = [1 = practice_expinstructiontrial;
+			2 = start; 
+			3 - 12 = noreplace(nontarget, nontarget, nontarget, nontarget, nontarget,
+																	v_target, v_target, a_target, a_target, av_target)]
+/ onblockend = [
+	values.v_TotalHits = 0; 
+	values.v_TotalFA = 0; 
+	values.a_TotalHits = 0;
+	values.a_TotalFA = 0; 
+	values.TotalBlocks = 0; 
+	values.DV = 0;
+]
+/ screencolor  = white
+/ recorddata = false
+/ postinstructions = (BlockSummary_practice)
+/ branch = [if (values.N == parameters.LastPracticeN && values.repetitioncounter == 1) {values.repetitioncounter = 0; block.repeatpractice}]
+/ branch = [if (values.repetitioncounter < 1) block.practice_d_ntask else { values.N += 1; values.repetitioncounter = 0; block.practice_d_ntask}]		
+/ skip = [surveypage.repeat_instructions.response == "Nee"]
+</block>
+
+						
+******************************
+Test Blocks: adaptive
+******************************						
+
+*if a participant makes fewer than 3 errors per modality on a level then participant moves up a level (see Jaeggi et al (2010), Experiment 2, p.630)
+*if a participant makes more than 5 errors on either one modality on a level then participant moves down a level (see Jaeggi et al (2010), Experiment 2, p.630)
+*otherwise participant stays on the same level (see Jaeggi et al (2010), Experiment 2, p.630)
+*Max number of blocks: 15 (see Jaeggi et al (2010), Experiment 2, p.630)
+*Blocks give performance feedback (see Jaeggi et al (2010), Experiment 2, p.630)
+*errors defined in this script: sum of Misses and False Alarms
+
+
+* Block starts with 1 instruction slide and is followed by N start-trials that  cannot present targets yet (not included in performance analyses)
+* in remaining 20 trials: ratio nontargets : v_target : a_target : av_target: 10 : 4 : 4: 2 = 5: 2: 2: 1
+
+<block adapt_d_ntask>
+/ preinstructions = (ExpInstructions)
+/ onblockbegin = [
+	values.TotalBlocks += 1; 
+	values.starttrialcounter = 0;
+	values.v_currenttarget = 0; 
+	values.a_currenttarget = 0; 
+						
+	list.v_minus.reset();
+	values.lastIndex = 1;
+	expressions.fillVlist;
+						
+	list.a_minus.reset();
+	values.lastIndex = 1;
+	expressions.fillAlist;					
+						
+	values.v_Hits = 0; 
+	values.v_FalseA = 0; 
+	values.v_Misses = 0; 
+	values.v_CorrReject = 0;
+	values.a_Hits = 0; 
+	values.a_FalseA = 0; 
+	values.a_Misses = 0; 
+	values.a_CorrReject = 0;
+]
+/trials = [1 = start; 2 - 21 = noreplace(nontarget, nontarget, nontarget, nontarget, nontarget,
+												v_target, v_target, a_target, a_target, av_target)]
+/ screencolor  = white
+/ postinstructions = (BlockSummary)
+/ onblockend = [
+	values.a_TotalFA += values.a_FalseA;
+	values.a_TotalHits += values.a_Hits;
+	values.v_TotalFA += values.v_FalseA;
+	values.v_TotalHits += values.v_Hits;
+	
+	values.DV = (((values.v_TotalHits - values.v_TotalFA) + (values.a_TotalHits - values.a_TotalFA))/2)/ values.TotalBlocks;
+]
+/ branch = [if (values.TotalBlocks == parameters.NumberTestBlocks) block.EndExp]
+/ branch = [if ((values.v_Misses + values.v_FalseA) < 3 && (values.a_Misses + values.a_FalseA) < 3) {values.N += 1; block.adapt_d_ntask}]
+/ branch = [if ( (values.N > 1) && ( (values.v_Misses + values.v_FalseA) > 5 || (values.a_Misses + values.a_FalseA) > 5) ) {values.N -= 1; block.adapt_d_ntask}
+					else block.adapt_d_ntask]
+/ bgstim = (progress)
+</block>
+					
+**************************************************************************************************************
+**************************************************************************************************************
+	EXPERIMENT 
+**************************************************************************************************************
+**************************************************************************************************************
+
+*After running the initial instructions, participants work through (non-adaptive) practice blocks for N = 1 to N = 3
+* After practice, participants work through 
+ adaptive version: 15 blocks of levels N = 1 to N = ? (depending on performance)
+
+<expt>
+/ blocks = [ 
+				1 = initial_info;
+				2  = Nbackinstruct_start; 
+				3 = practice_d_ntask; 
+				4 = StartExp;
+				5 = adapt_d_ntask;
+]
+/onexptend = [values.completed = 1]
+</expt>
+
+
+
+**************************************************************************************************************
+Jamie additions
+**************************************************************************************************************
+
+<text progress>
+/ items = ("Block <%values.TotalBlocks%> of <%parameters.NumberTestBlocks%>")
+/ position = (90%, 95%)
+/ size = (20%, 10%)
+/ erase = false
+</text>
+
+<shape progress_cover>
+/ shape = rectangle
+/ color = white
+/ position = (90%, 95%)
+/ size = (20%, 10%)
+/ erase = false
+</shape>
+
+<text a_for_shape>
+/ items = ("A = Vierkant")
+/ position = (10%, 10%)
+/ size = (20%, 10%)
+/ erase = false
+</text>
+
+<text l_for_letter>
+/ items = ("L = Letter")
+/ position = (90%, 10%)
+/ size = (20%, 10%)
+/ erase = false
+</text>
+
+
+<text red_a>
+/ items = ("A = Vierkant")
+/ size = (20%, 10%)
+/ color = red
+/ position = (10%, 10%)
+</text>
+
+<text green_a>
+/ items = ("A = Vierkant")
+/ size = (20%, 10%)
+/ color = green
+/ position = (10%, 10%)
+</text>
+
+<text red_l>
+/ items = ("L = Letter")
+/ size = (20%, 10%)
+/ color = red
+/ position = (90%, 10%)
+</text>
+
+<text green_l>
+/ items = ("L = Letter")
+/ size = (20%, 10%)
+/ color = green
+/ position = (90%, 10%)
+</text>
+
+
+
+<radiobuttons first_time>
+/ caption = "Is dit uw eerste keer dat u de training doet?"
+/ options = ("Ja", "Nee")
+/ required = true
+</radiobuttons>
+
+<radiobuttons repeat_instructions>
+/ caption = "Wilt u een hernnering aan de instructies voor de training?"
+/ options = ("Ja", "Nee")
+/ required = true
+</radiobuttons>
+
+<textbox age>
+/ caption = "Wat is uw leeftijd?"
+/ range = (50, 120)
+/ required = true
+/ mask = integer
+</textbox>
+
+<dropdown gender>
+/ caption = "Wat is uw geslacht?"
+/ options = ("Mens", "Vrouw", "Andere")
+</dropdown>
+
+<textbox id>
+/ caption = "Wat is uw deelnemernummer?"
+/ mask = integer
+/ range = (1, 1000)
+</textbox>
+
+
+<surveypage first_time>
+/ questions = [1 = first_time]
+/ showbackbutton = false
+</surveypage>
+
+<surveypage repeat_instructions>
+/ questions = [1 = repeat_instructions]
+/ backlabel = "Terug"
+/ showbackbutton = true
+/ skip = [surveypage.first_time.response == "Ja"]
+</surveypage>
+
+<surveypage demographics_initial>
+/ questions = [1 = age; 2 = gender]
+/ backlabel = "Terug"
+/ showbackbutton = true
+/ skip = [surveypage.first_time.response == "Nee"]
+</surveypage>
+
+<surveypage id>
+/ questions = [1 = id]
+/ backlabel = "Terug"
+/ showbackbutton = true
+</surveypage>
+
+
+<block initial_info>
+/ trials = [1 = first_time; 2 = demographics_initial; 
+			3 = id; 4 = repeat_instructions]
+</block>
+
+
+
+**************************************************************************************************************
+												End of File
+**************************************************************************************************************
